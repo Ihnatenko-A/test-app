@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import 'fontsource-roboto';
+
+import Button from '@material-ui/core/Button';
+
+import SuppliersPage from 'components/SuppliersPage';
+import SupplierPage from 'components/SupplierPage';
+
+const App = () => (
+  <Router basename="/">
+      <div>
+        <nav className="navbar">
+          <ul className="navbar-menu">
+
+            <li>
+              <Link to="/">
+              <Button variant="contained" color="primary">
+                Suppliers
+              </Button>
+            </Link>
+            </li>
+
+          </ul>
+        </nav>
+        <Switch>
+          <Route exact path="/" component={SuppliersPage} />
+          <Route exact path="/supplier/:id" component={SupplierPage} />
+        </Switch>
+      </div>
+    </Router>
+);
 
 export default App;
