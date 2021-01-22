@@ -5,7 +5,8 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'column',
-    width: '100%'
+    width: '100%',
+    paddingTop: 60,
   },
   heading: {
     fontWeight: 'bold',

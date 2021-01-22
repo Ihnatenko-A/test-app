@@ -3,46 +3,20 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import 'fontsource-roboto';
 
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import SuppliersList from 'components/SuppliersList';
 import SupplierPage from 'components/SupplierPage';
+import NavBar from 'components/NavBar';
 
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 
-import { makeStyles } from '@material-ui/styles';
-import { IData } from 'interfaces';
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    padding: 20,
-    borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-    opacity: 0.5,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'black',
-  },
-  navbar: {
-    marginBottom: 50,
-  },
-  navTitleBox: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: 20,
-  },
-  navTitle: {
-    fontWeight: 'bold',
-  }
-}));
+import { ISuppliersData } from 'interfaces';
+
 
 
 const App = () => {
-  const classes = useStyles();
-  const [data, setData] = useState<IData>({});
+
+  const [suppliersData, setSuppliersData] = useState<ISuppliersData>({});
   const [activeSupplierId, setActiveSupplierId] = useState('');
 
   const getSuppliers = () => {
@@ -54,7 +28,7 @@ const App = () => {
 
   useEffect(() => {
     getSuppliers().then(data => {
-      setData(data)
+      setSuppliersData(data)
     })
   }, []);
 
@@ -62,26 +36,21 @@ const App = () => {
 
     <Router basename="/">
       <div>
-        <nav className={classes.navbar}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Paper square>
-                <Grid container>
-                  <Grid item>
-                    <Link to="/" className={classes.button}>
-                      <ArrowLeftIcon/>
-                    </Link>  
-                  </Grid>
-                  <Grid item className={classes.navTitleBox}>
-                    <Typography className={classes.navTitle}>
-                      {data[activeSupplierId]?.company}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
-          </Grid>
-        </nav>
+        <Switch>
+          <Route
+            exact
+            path="/supplier/:id"
+            component={
+              (props: any) =>
+                <NavBar
+                  {...props}
+                  suppliersData={suppliersData}
+                  activeSupplierId={activeSupplierId}
+                />
+            }
+          >
+          </Route>
+        </Switch>
 
         <Switch>
           <Route
@@ -91,7 +60,7 @@ const App = () => {
               (props:any) => 
                 <SuppliersList 
                   {...props}
-                  data={data} 
+                  suppliersData={suppliersData} 
                   setActiveSupplier={setActiveSupplierId}
                   activeSupplier={activeSupplierId}
                 />
@@ -104,7 +73,7 @@ const App = () => {
               (props: any) =>
                 <SupplierPage
                   {...props}
-                  data={data}
+                  suppliersData={suppliersData}
                   setActiveSupplier={setActiveSupplierId}
                 />
               }
@@ -114,6 +83,5 @@ const App = () => {
     </Router>
   )
 }
- 
 
 export default App;

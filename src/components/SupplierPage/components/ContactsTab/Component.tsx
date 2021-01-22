@@ -20,7 +20,8 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Modal from './components/CreateContactModal';
 import ContactRow from './components/ContactRow';
 
-import { useStyles, contacts } from './utils'
+import { contacts } from './utils';
+import { useStyles } from './styles';
 
 const ContactsTab:FunctionComponent = () => {
   const classes = useStyles();

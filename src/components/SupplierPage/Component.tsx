@@ -11,7 +11,7 @@ import Details from './components/Details';
 import MapTab from './components/MapTab';
 import ContactsTab from './components/ContactsTab';
 
-import { ISupplier, IData } from 'interfaces';
+import { ISupplier, ISuppliersData } from 'interfaces';
 
 import { useStyles } from './styles'; 
 
@@ -46,7 +46,7 @@ const getTab = (tab:number) => {
   }
 };
 
-const SupplierPage:FunctionComponent<{match:any, data:IData, setActiveSupplier:any}> = ({match, data, setActiveSupplier}) => {
+const SupplierPage:FunctionComponent<{match:any, suppliersData:ISuppliersData, setActiveSupplier:any}> = ({match, suppliersData, setActiveSupplier}) => {
   const classes = useStyles();
 
   const [supplier, setSupplier] = useState<ISupplier>(initialSupplierState);
@@ -56,8 +56,8 @@ const SupplierPage:FunctionComponent<{match:any, data:IData, setActiveSupplier:a
   const { id } = match.params
 
   useEffect(() => {
-    if (data[id]) {
-      setSupplier(data[id]);
+    if (suppliersData[id]) {
+      setSupplier(suppliersData[id]);
       setActiveSupplier(id);
     };
   }, [])

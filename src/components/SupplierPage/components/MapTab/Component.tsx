@@ -33,7 +33,7 @@ const MapTab:FunctionComponent = () => {
             </GoogleMapReact>
           </div>
         </Grid>
-        <Grid className={classes.InfoBlock}>
+        <Grid>
           <Typography className={classes.heading}>
             Additional Info
           </Typography>

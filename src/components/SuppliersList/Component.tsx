@@ -13,9 +13,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import Card from 'components/Card';
 
 import { useStyles } from './styles';
-import { ISupplier, IData } from 'interfaces';
+import { ISupplier, ISuppliersData } from 'interfaces';
 
-const SuppliersList:FunctionComponent<{data: IData, setActiveSupplier: any, activeSupplier: string}> = ({data, setActiveSupplier, activeSupplier}) => {
+const SuppliersList:FunctionComponent<{suppliersData: ISuppliersData, setActiveSupplier: any, activeSupplier: string}> = ({suppliersData, setActiveSupplier, activeSupplier}) => {
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = useState('');
@@ -23,13 +23,13 @@ const SuppliersList:FunctionComponent<{data: IData, setActiveSupplier: any, acti
   const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
 
   useEffect(() => {
-    const suppliersIds = Object.keys(data);
+    const suppliersIds = Object.keys(suppliersData);
 
     const filteredSuppliers: ISupplier[] = [];
 
     suppliersIds.forEach((id: string) => {
-      if (data[id].company.toLowerCase().trim().includes(searchValue.toLowerCase().trim())) {
-        filteredSuppliers.push(data[id]);
+      if (suppliersData[id].company.toLowerCase().trim().includes(searchValue.toLowerCase().trim())) {
+        filteredSuppliers.push(suppliersData[id]);
       }
     });
     setSuppliers(filteredSuppliers);
@@ -38,7 +38,7 @@ const SuppliersList:FunctionComponent<{data: IData, setActiveSupplier: any, acti
       setActiveSupplier('')
     }
 
-  }, [searchValue, data])
+  }, [searchValue, suppliersData])
 
   const handleChange = (prop: any) => (event: any) => {
     setSearchValue(event.target.value);

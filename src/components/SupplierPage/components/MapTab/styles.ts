@@ -10,9 +10,5 @@ export const useStyles = makeStyles((theme) => ({
   },
   locationBlock: {
     marginBottom: 40,
-  },
-  InfoBlock: {
-
   }
-  
 }));
