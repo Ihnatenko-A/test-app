@@ -1,6 +1,6 @@
-import { ISupplier, IData } from './Suplier.interface';
+import { ISupplier, ISuppliersData } from './Suplier.interface';
 
 export type {
   ISupplier,
-  IData
+  ISuppliersData
 };

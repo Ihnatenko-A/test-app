@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useReducer } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -15,43 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
-    },
-    header: {
-      padding: '20px 0'
-    },
-    heading: {
-      fontWeight: 'bold',
-    },
-    divider: {
-      marginLeft: 0,
-    },
-    body: {
-      padding: '20px 0'
-    },
-    button: {
-      textTransform: 'capitalize',
-    },
-    icon: {
-      marginRight: 10,
-    },
-    form: {
-      width: '100%',
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }),
-);
+import { useStyles } from './styles';
 
 const initialState = {
   firstName: '',
@@ -120,8 +84,8 @@ const CreateContactModal:FunctionComponent<{isOpened?: boolean}> = ({isOpened = 
           <Paper className={classes.paper}>
             <Grid className={classes.header}>
               <Container>
-                <Grid container justify="space-between">
-                  <Typography variant="h5" className={classes.heading}>
+                <Grid container justify="space-between" alignItems="center">
+                  <Typography variant="h6" className={classes.heading}>
                     Create Vendor Contact
                   </Typography>
                   <IconButton onClick={handleClose}>
@@ -198,7 +162,7 @@ const CreateContactModal:FunctionComponent<{isOpened?: boolean}> = ({isOpened = 
                       />
                     </Grid>
                   
-                    <Grid item sm={6}>
+                    <Grid item xs={6}>
                       <Button
                         fullWidth
                         variant="outlined"
@@ -208,7 +172,7 @@ const CreateContactModal:FunctionComponent<{isOpened?: boolean}> = ({isOpened = 
                         Cancel
                       </Button>
                     </Grid>
-                    <Grid item sm={6}>
+                    <Grid item xs={6}>
                       <Button
                         onClick={onSubmit}
                         fullWidth

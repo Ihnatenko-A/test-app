@@ -1,7 +1,5 @@
 import { useEffect, useState, FunctionComponent } from 'react';
 
-import { RouteComponentProps } from 'react-router-dom';
-
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -9,53 +7,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 
-import { makeStyles } from '@material-ui/core/styles';
-
 import Details from './components/Details';
 import MapTab from './components/MapTab';
 import ContactsTab from './components/ContactsTab';
 
-import { getSupplier } from './utils'; 
+import { ISupplier, ISuppliersData } from 'interfaces';
 
-import { ISupplier } from 'interfaces';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    // flexWrap: 'wrap',
-    // flexDirection: 'column',
-    width: '100%'
-  },
-  header: {
-    padding: '20px 50px 0 50px'
-  },
-  button: {
-    boxSizing: 'border-box',
-    padding: '15px 8px',
-    textTransform: 'capitalize',
-    borderRadius: 0,
-    borderBottom: '2px solid transparent'
-  },
-  divider: {
-    marginLeft: 0,
-  },
-  active: {
-    borderBottom: '2px solid black',
-  }
-}));
-
-type TParams = { id: string };
-
-const getTab = (tab:string) => {
-
-  switch(tab) {
-    case '1':
-      return <MapTab />
-    case '2':
-      return <ContactsTab />
-  }
-};
+import { useStyles } from './styles'; 
 
 const initialSupplierState = {
   "company": '',
@@ -72,47 +30,68 @@ const initialSupplierState = {
   "revenue": '',
   "type": '',
   "website": '',
-}
+};
 
-const SupplierPage:FunctionComponent<any> = ({ match }: RouteComponentProps<TParams>) => {
+enum Tabs {
+  mapTab,
+  contactsTab,
+};
+
+const getTab = (tab:number) => {
+  switch(tab) {
+    case Tabs.mapTab:
+      return <MapTab />
+    case Tabs.contactsTab:
+      return <ContactsTab />
+  }
+};
+
+const SupplierPage:FunctionComponent<{match:any, suppliersData:ISuppliersData, setActiveSupplier:any}> = ({match, suppliersData, setActiveSupplier}) => {
   const classes = useStyles();
 
   const [supplier, setSupplier] = useState<ISupplier>(initialSupplierState);
 
-  const [tab, setTab] = useState('1');
+  const [tab, setTab] = useState(Tabs.mapTab);
 
   const { id } = match.params
 
   useEffect(() => {
-    getSupplier(id).then((res: any) => {
-      setSupplier(res);
-    });
-  },[id])
+    if (suppliersData[id]) {
+      setSupplier(suppliersData[id]);
+      setActiveSupplier(id);
+    };
+  }, [])
 
-  const handleClick = (e: any) => {
-    setTab(e.currentTarget.dataset.tab);
-  }
+  const openMapTab = () => {
+    setTab(Tabs.mapTab);
+  };
+
+  const openContactsTab = () => {
+    setTab(Tabs.contactsTab);
+  };
 
   return (
     <>
       <CssBaseline/>
       <Container maxWidth="lg">
         <Paper elevation={3}>
-          <div className={classes.root}>
-            <Grid item xs={4}>
+          <Grid container>
+            <Grid item xs={12} md={4}>
               <Details supplier={supplier}/>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
               <Paper elevation={0} square className={classes.header}>
-                <Button data-tab='1' onClick={handleClick} className={`${classes.button} ${tab === '1' && classes.active}`}>Company Profile</Button>
-                <Button data-tab="2" onClick={handleClick} className={`${classes.button} ${tab === '2' && classes.active}`}>Contacts</Button>
+                <Container>
+                  <Button onClick={openMapTab} className={`${classes.button} ${(tab === Tabs.mapTab && classes.active) || ''}`}>Company Profile</Button>
+                  <Button onClick={openContactsTab} className={`${classes.button} ${(tab === Tabs.contactsTab && classes.active) || ''}`}>Contacts</Button>
+                </Container>
               </Paper>
               <Divider variant="inset" className={classes.divider}/>
               <Grid>
                 {getTab(tab)}
               </Grid>
             </Grid>
-          </div>
+          </Grid>
         </Paper>
       </Container>
     </>

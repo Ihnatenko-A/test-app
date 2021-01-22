@@ -17,6 +17,6 @@ export interface ISupplier{
   website: string;
 }
 
-export interface IData{
+export interface ISuppliersData{
   [key: string]: ISupplier
 }

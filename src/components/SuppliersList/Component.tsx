@@ -8,90 +8,41 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
 
-import { makeStyles } from '@material-ui/core/styles';
-
 import SearchIcon from '@material-ui/icons/Search';
 
 import Card from 'components/Card';
 
-import { getSuppliers } from './utils';
-import { ISupplier, IData } from 'interfaces';
+import { useStyles } from './styles';
+import { ISupplier, ISuppliersData } from 'interfaces';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    width: '100%'
-  },
-  heading: {
-    fontWeight: 'bold',
-    marginBottom: 15
-  },
-  searchBar: {
-    display: 'flex',
-    width: '100%',
-    padding: 10,
-  },
-  searchBarContainer: {
-    padding: 8
-  },
-  card: {
-    margin: '5px 0',
-  },
-  cards: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '8px',
-    boxSizing: 'border-box',
-    width: '100%',
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
-  textField: {
-    width: '25ch',
-  },
-}));
-
-
-const SuppliersPage:FunctionComponent = () => {
+const SuppliersList:FunctionComponent<{suppliersData: ISuppliersData, setActiveSupplier: any, activeSupplier: string}> = ({suppliersData, setActiveSupplier, activeSupplier}) => {
   const classes = useStyles();
 
   const [searchValue, setSearchValue] = useState('');
 
-  const [data, setData] = useState<IData>({});
-
   const [suppliers, setSuppliers] = useState<ISupplier[]>([]);
 
   useEffect(() => {
-    getSuppliers().then((res: any) => {
-      setData(res)
-    });
-  }, [])
+    const suppliersIds = Object.keys(suppliersData);
 
-  useEffect(() => {
-    const keys = Object.keys(data);
+    const filteredSuppliers: ISupplier[] = [];
 
-    const array: ISupplier[] = [];
-
-    keys.forEach((key: string) => {
-      if (data[key].company.toLowerCase().trim().includes(searchValue.toLowerCase().trim())) {
-        array.push(data[key]);
+    suppliersIds.forEach((id: string) => {
+      if (suppliersData[id].company.toLowerCase().trim().includes(searchValue.toLowerCase().trim())) {
+        filteredSuppliers.push(suppliersData[id]);
       }
     });
-    setSuppliers(array);
+    setSuppliers(filteredSuppliers);
 
-    console.log(array)
-  }, [searchValue, data])
+    if (activeSupplier) {
+      setActiveSupplier('')
+    }
+
+  }, [searchValue, suppliersData])
 
   const handleChange = (prop: any) => (event: any) => {
     setSearchValue(event.target.value);
   };
-
 
   return (
     <Container maxWidth="lg">
@@ -125,6 +76,6 @@ const SuppliersPage:FunctionComponent = () => {
       </div>
     </Container>
   );
-}
+};
 
-export default SuppliersPage;
+export default SuppliersList;

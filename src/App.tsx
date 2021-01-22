@@ -1,35 +1,87 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import 'fontsource-roboto';
 
-import Button from '@material-ui/core/Button';
 
-import SuppliersPage from 'components/SuppliersPage';
+import SuppliersList from 'components/SuppliersList';
 import SupplierPage from 'components/SupplierPage';
+import NavBar from 'components/NavBar';
 
-const App = () => (
-  <Router basename="/">
+
+
+import { ISuppliersData } from 'interfaces';
+
+
+
+const App = () => {
+
+  const [suppliersData, setSuppliersData] = useState<ISuppliersData>({});
+  const [activeSupplierId, setActiveSupplierId] = useState('');
+
+  const getSuppliers = () => {
+    return fetch('http://localhost:3001/suppliers')
+    .then(res => res.json())
+    .then(data => data)
+    .catch(err => console.error(err))
+  }
+
+  useEffect(() => {
+    getSuppliers().then(data => {
+      setSuppliersData(data)
+    })
+  }, []);
+
+  return (
+
+    <Router basename="/">
       <div>
-        <nav className="navbar">
-          <ul className="navbar-menu">
-
-            <li>
-              <Link to="/">
-              <Button variant="contained" color="primary">
-                Suppliers
-              </Button>
-            </Link>
-            </li>
-
-          </ul>
-        </nav>
         <Switch>
-          <Route exact path="/" component={SuppliersPage} />
-          <Route exact path="/supplier/:id" component={SupplierPage} />
+          <Route
+            exact
+            path="/supplier/:id"
+            component={
+              (props: any) =>
+                <NavBar
+                  {...props}
+                  suppliersData={suppliersData}
+                  activeSupplierId={activeSupplierId}
+                />
+            }
+          >
+          </Route>
+        </Switch>
+
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={
+              (props:any) => 
+                <SuppliersList 
+                  {...props}
+                  suppliersData={suppliersData} 
+                  setActiveSupplier={setActiveSupplierId}
+                  activeSupplier={activeSupplierId}
+                />
+              }
+            />
+          <Route
+            exact
+            path="/supplier/:id"
+            component={
+              (props: any) =>
+                <SupplierPage
+                  {...props}
+                  suppliersData={suppliersData}
+                  setActiveSupplier={setActiveSupplierId}
+                />
+              }
+            />
         </Switch>
       </div>
     </Router>
-);
+  )
+}
 
 export default App;
