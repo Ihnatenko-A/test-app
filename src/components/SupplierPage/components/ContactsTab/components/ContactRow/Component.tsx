@@ -7,30 +7,7 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import PhoneIcon from '@material-ui/icons/Phone';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 
-import { makeStyles } from '@material-ui/styles';
-
-const useStyles = makeStyles((theme) => ({
-  row: {
-    display: 'flex',
-  },
-  nameText: {
-    fontSize: 12,
-    display: 'flex',
-    alignItems: 'center'
-  },
-  smallText: {
-    fontSize: 12,
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-    top: 6
-  },
-  rowIcon: {
-    fontSize: 15,
-    opacity: 0.5,
-    marginRight: 5,
-  }
-}));
+import { useStyles } from './styles';
 
 const ContactRow:FunctionComponent<{
   name: string,
@@ -40,8 +17,8 @@ const ContactRow:FunctionComponent<{
 }> = ({name, location, email, phone}) => {
   const classes = useStyles();
   return (
-    <Grid className={classes.row}>
-      <Grid item xs={3}>
+    <Grid container className={classes.row}>
+      <Grid item xs={2}>
         <Typography className={classes.nameText}>
           {name}
         </Typography>
@@ -52,7 +29,7 @@ const ContactRow:FunctionComponent<{
           {location}
         </Typography>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <Typography className={classes.smallText}>
           <MailOutlineIcon className={classes.rowIcon}/>
           {email}
